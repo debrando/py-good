@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 """ Slim yet handsome validation library (voluptuous 2) """
 
-from setuptools import setup, find_packages
+import setuptools
 
-setup(
-    # http://pythonhosted.org/setuptools/setuptools.html
+METADATA = dict(
     name='good',
-    version='0.0.7-0',
+    version='0.0.7',
     author='Mark Vartanyan',
     author_email='kolypto@gmail.com',
 
@@ -16,7 +15,7 @@ setup(
     long_description=open('README.rst').read(),
     keywords=['validation'],
 
-    packages=find_packages(),
+    packages=setuptools.find_packages(),
     scripts=[],
     entry_points={},
 
@@ -40,3 +39,18 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 )
+
+try:
+    import distutils.command.bdist_conda
+    print("Conda distribution")
+    METADATA.update(dict(
+        distclass=distutils.command.bdist_conda.CondaDistribution,
+        conda_import_tests=True,
+        conda_command_tests=True,
+        conda_buildnum=1,
+    ))
+except ImportError:
+    print("Standard distribution")
+
+if __name__ == '__main__':
+    setuptools.setup(**METADATA)
